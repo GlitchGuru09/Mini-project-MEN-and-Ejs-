@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js" defer></script>
+</head>
+<body class="bg-gray-900 min-h-screen">
+  <!-- Navbar -->
+  <nav class="bg-gray-800 p-4 shadow-lg">
+    <div class="container mx-auto flex justify-between items-center">
+      <a href="#" class="text-xl text-white font-semibold">My Profile</a>
+      <a href="/logout" class="px-4 py-2 bg-gray-500 text-white font-semibold rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+        Logout
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container mx-auto p-6">
+    <h1 class="text-3xl text-white mb-6">Hello, <%= user.name %></h1>
+
+    <!-- New Post Section -->
+    <div class="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+      <form action="/post" method="post">
+        <h2 class="text-xl text-white mb-4">Create a New Post</h2>
+        <textarea 
+          class="w-full h-32 p-4 text-white bg-gray-700 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400" 
+          placeholder="What's on your mind?" name="content"></textarea>
+        <input 
+          type="submit" value="Post" 
+          class="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+        </input>
+      </form>
+    </div>
+
+    <!-- Posts Section -->
+    <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+      <h2 class="text-xl text-white mb-4">All Posts</h2>
+      <div class="flex space-x-4 overflow-x-auto">
+        <% user.posts.reverse().forEach(function (post) { %>
+          <div class="bg-gray-700 p-4 rounded-lg flex-shrink-0 w-64">
+            <p class="text-white mb-2">@<%= user.username %></p>
+            <!-- Highlighted Content -->
+            <div class="bg-gray-600 text-white p-3 rounded-lg mb-4">
+              <span><%= post.content %></span>
+            </div>
+            <span class="text-sm text-gray-400 block mb-4">Created on: <%= post.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></span>
+            <span class="text-sm text-gray-400 block mb-4">At: <%= post.date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) %></span>
+            <div class="flex justify-between items-center">
+              <!-- Like Action -->
+              <a href="#" class="text-blue-400 hover:text-blue-300 flex items-center space-x-2">
+                <i class="fas fa-thumbs-up"></i>
+                <span>Like</span>
+              </a>
+              <!-- Edit Action -->
+              <a href="#" class="text-yellow-400 hover:text-yellow-300 flex items-center space-x-2">
+                <i class="fas fa-edit"></i>
+                <span>Edit</span>
+              </a>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

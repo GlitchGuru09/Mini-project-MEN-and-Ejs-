@@ -13,15 +13,30 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 
-
+//show create account page 
 app.get('/',function(req,res){
     res.render("index");
 })
 
 //show profile page
-app.get('/profile',isLoggedIn,function(req,res){
-    console.log(req.user);
-    res.render("login");
+app.get('/profile',isLoggedIn,async function(req,res){
+    let user = await userModel.findOne({email: req.user.email}).populate("posts");
+    res.render("profile",{user});
+
+})
+
+//create post 
+app.post('/post',isLoggedIn ,async function(req,res){
+    let user = await userModel.findOne({email: req.user.email})
+    let {content} = req.body;
+    let post = await postModel.create({
+        user: user._id,
+        content
+    })
+
+    user.posts.push(post._id);
+    await user.save();
+    res.redirect("/profile");
 
 })
 
@@ -44,7 +59,7 @@ app.post('/register', async function(req,res){
             
             const token = jwt.sign({email: email, userid: user.id}, "secret");
             res.cookie("token", token);
-            res.send("Registered");
+            res.redirect("/login");
 
         })
     })
@@ -66,7 +81,7 @@ app.post('/login', async function(req,res){
         if(result){
             const token = jwt.sign({email: email, userid: user.id}, "secret");
             res.cookie("token", token);
-            res.status(200).send("you can login.");
+            res.status(200).redirect("/profile");
         }
         else res.redirect("/login");
     })
@@ -80,7 +95,7 @@ app.get('/logout',function(req,res){
 
 //protected routes (it acts as a middle ware)
 function isLoggedIn(req,res,next){
-    if(req.cookies.token === "") res.send("You must be logged in to access this page.");
+    if(req.cookies.token === "") res.redirect("/login");
     else{
         let data = jwt.verify(req.cookies.token, "secret");
         req.user = data
