@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Profile</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js" defer></script>
+</head>
+<body class="bg-gray-900 min-h-screen flex items-center justify-center">
+  <!-- Navbar -->
+  <nav class="bg-gray-800 p-4 shadow-lg absolute top-0 left-0 w-full">
+    <div class="container mx-auto flex justify-between items-center">
+      <a href="#" class="text-xl text-white font-semibold">Edit Profile</a>
+      <a href="/logout" class="px-4 py-2 bg-gray-500 text-white font-semibold rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+        Logout
+      </a>
+    </div>
+  </nav>
+
+  <!-- Edit Section -->
+  <div class="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md">
+    <form action="/update/<%= post._id %>" method="post">
+      <h2 class="text-2xl text-white mb-4">Edit Your Post</h2>
+      <textarea 
+        class="w-full h-40 p-4 text-white bg-gray-700 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400" 
+        placeholder="Update your content here" name="content"><%= post.content %></textarea>
+      <div class="flex justify-between mt-4">
+        <input  
+        type="submit" value="Save"
+          class="px-6 py-2 bg-yellow-500 text-white font-semibold rounded-lg hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2">
+        </input>
+        <a 
+          href="/profile" 
+          class="px-6 py-2 bg-gray-500 text-white font-semibold rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+          Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -25,6 +25,35 @@ app.get('/profile',isLoggedIn,async function(req,res){
 
 })
 
+//like feature
+app.get('/like/:id',isLoggedIn,async function(req,res){
+    let post = await postModel.findOne({_id: req.params.id}).populate("user");
+
+    if(post.likes.indexOf(req.user.userid) === -1){
+        post.likes.push(req.user.userid);//if there is no like then push one like
+    }else{
+        post.likes.splice(post.likes.indexOf(req.user.userid), 1);//if there is like then remove one like
+    }
+
+    await post.save();
+    res.redirect("/profile");
+
+})
+
+//show edit page
+app.get('/edit/:id',isLoggedIn,async function(req,res){
+    let post = await postModel.findOne({_id: req.params.id}).populate("user");
+    res.render("edit",{post})
+
+})
+
+//edit feature
+app.post('/update/:id', isLoggedIn, async function(req, res) {
+      let post = await postModel.findOneAndUpdate({ _id: req.params.id },{ content: req.body.content });
+      res.redirect('/profile');
+});
+  
+
 //create post 
 app.post('/post',isLoggedIn ,async function(req,res){
     let user = await userModel.findOne({email: req.user.email})
