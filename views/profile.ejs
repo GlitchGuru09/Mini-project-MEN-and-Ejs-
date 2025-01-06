@@ -37,7 +37,13 @@
 
   <!-- Main Content -->
   <div class="container mx-auto p-6">
-    <h1 class="text-3xl text-white mb-6">Hello, <%= user.name %></h1>
+    <div class="flex items-start gap-3">
+      <div class="w-20 h-20 rounded-md overflow-hidden">
+        <img class="w-full h-full object-cover" src="/images/uploads/<%= user.profilepic %>" alt="">
+      </div>
+      <h1 class="text-3xl text-white mb-6">Hello, <%= user.name %></h1>
+    </div>
+  
 
     <!-- New Post Section -->
     <div class="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
